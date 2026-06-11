@@ -65,6 +65,18 @@ h2{
     visibility: hidden;
 }
 
+.form .form-control.error small{
+    visibility: visible;
+}
+
+.form .form-control.error input{
+   border-color: #e74c3c;
+}
+
+.form .form-control.success input{
+   border-color: #2ecc71;
+}
+
 .form button{
     cursor: pointer;
     background-color: #3498db;
