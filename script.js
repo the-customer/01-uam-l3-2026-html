@@ -23,38 +23,93 @@ username.addEventListener("blur",function(){
 
 
 // Les fonction du programme:
-function checkRequired(input){
-    // recuperer la valeur saisie dans le champ username:
-    const inputValue = input.value.trim();
-    const inputDivParent = input.parentNode;
-    const inputSmall = inputDivParent.querySelector("small");
-    if(inputValue === ""){
-        // Recuper la balise div (le parent de username)
-        inputDivParent.classList.remove("success")
-        inputDivParent.classList.add("error")
-        inputSmall.textContent =  getInputName(input) + " is required!"
-        // inputSmall.innerText = "Username is required!"
-        // inutSmall.innerHTML = "Username is required!"
-    }else{
-        inputDivParent.classList.remove("error")
-        inputDivParent.classList.add("success")
-    }
+// function checkRequired(input){
+//     // recuperer la valeur saisie dans le champ username:
+//     const inputValue = input.value.trim();
+//     const inputDivParent = input.parentNode;
+//     const inputSmall = inputDivParent.querySelector("small");
+//     if(inputValue === ""){
+//         // Recuper la balise div (le parent de username)
+//         inputDivParent.classList.remove("success")
+//         inputDivParent.classList.add("error")
+//         inputSmall.textContent =  getInputName(input) + " is required!"
+//         // inputSmall.innerText = "Username is required!"
+//         // inutSmall.innerHTML = "Username is required!"
+//     }else{
+//         inputDivParent.classList.remove("error")
+//         inputDivParent.classList.add("success")
+//     }
+// }
+
+tab = [12,12,3,5,56]
+
+tab.forEach(i => {
+    
+});
+function checkRequired(inputs){
+    inputs.forEach(function(input){
+        // recuperer la valeur saisie dans le champ username:
+        
+        if(input.value === ""){
+            // Recuper la balise div (le parent de username)
+            showError(input,"is required!");
+            // inputSmall.innerText = "Username is required!"
+            // inutSmall.innerHTML = "Username is required!"
+        }else{
+            showSuccess(input);
+        }
+    });
 }
 
 function getInputName(input){
     return input.id.charAt(0).toUpperCase() + input.id.slice(1);
 }
 
-// events:
+function checkLength(input,min,max){
+    inputLength = input.value.length
+    if(inputLength < min){
+        showError(input, `must have at least ${min} characters!`);
+    }else if(inputLength > max){
+        showError(input, ` must have less than ${max} characters!`)
+    }else{
+        showSuccess(input);
+    }
+}
+
+function showError(input,errorMsg){
+    const inputValue = input.value.trim();
+    const inputDivParent = input.parentNode;
+    const inputSmall = inputDivParent.querySelector("small");
+
+    inputDivParent.classList.remove("success")
+    inputDivParent.classList.add("error")
+    inputSmall.textContent =  getInputName(input) + ` ${errorMsg}`
+}
+
+function showSuccess(input){
+    const inputDivParent = input.parentNode;
+    inputDivParent.classList.remove("error")
+    inputDivParent.classList.add("success")
+}
+
+
+
+
+
+// events: 
 const btn = document.querySelector("button");
 btn.addEventListener("click",function(){
-    checkRequired(username);
-    checkRequired(email);
-    checkRequired(password);
-    checkRequired(password2);
+    // checkRequired(username);
+    // checkRequired(email);
+    // checkRequired(password);
+    // checkRequired(password2);
 
     // a faire :
-    // checkRequired([username,email,password,password2])
+    checkRequired([username,email,password,password2]);
+
+    checkLength(username,3,25);
+    checkLength(username,3,25);
+    checkLength(password,6,25);
 });
 
 
