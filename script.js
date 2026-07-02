@@ -52,11 +52,11 @@ function checkRequired(inputs){
         
         if(input.value === ""){
             // Recuper la balise div (le parent de username)
-            showError(input,"is required!");
+            showErrorOrSuccess(input,"error","is required!");
             // inputSmall.innerText = "Username is required!"
             // inutSmall.innerHTML = "Username is required!"
         }else{
-            showSuccess(input);
+            showErrorOrSuccess(input);
         }
     });
 }
@@ -68,11 +68,11 @@ function getInputName(input){
 function checkLength(input,min,max){
     inputLength = input.value.length
     if(inputLength < min){
-        showError(input, `must have at least ${min} characters!`);
+        showErrorOrSuccess(input,'error', `must have at least ${min} characters!`);
     }else if(inputLength > max){
-        showError(input, ` must have less than ${max} characters!`)
+        showErrorOrSuccess(input,'error', ` must have less than ${max} characters!`)
     }else{
-        showSuccess(input);
+        showErrorOrSuccess(input);
     }
 }
 
@@ -93,8 +93,43 @@ function showSuccess(input){
 }
 
 
+function showErrorOrSuccess(input,type="success",errorMsg=""){
+    const inputValue = input.value.trim();
+    const inputDivParent = input.parentNode;
+    const inputSmall = inputDivParent.querySelector("small");
+    if(type.toLowerCase() === "error"){
+        inputDivParent.classList.remove("success")
+        inputDivParent.classList.add("error")
+        inputSmall.textContent =  getInputName(input) + ` ${errorMsg}`
+    }else{
+        inputDivParent.classList.remove("error")
+        inputDivParent.classList.add("success")
+    }    
+}
+
+function checkPasswordMatch(input1,input2){
+    if(input1.value === input2.value){
+        showErrorOrSuccess(input1)
+    }else{
+        showErrorOrSuccess(input2,"error","s not match!")
+    }
+}
 
 
+function checkEmail(input){
+    // Source - https://stackoverflow.com/a/46181
+// Posted by John Rutherford, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-07-02, License - CC BY-SA 4.0
+
+    const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+    if(input.value.toLowerCase().match(re)){
+        showErrorOrSuccess(input);
+    }else{
+        showErrorOrSuccess(input,"error"," is not valid!");
+    }
+
+}
 
 // events: 
 const btn = document.querySelector("button");
@@ -108,8 +143,11 @@ btn.addEventListener("click",function(){
     checkRequired([username,email,password,password2]);
 
     checkLength(username,3,25);
-    checkLength(username,3,25);
     checkLength(password,6,25);
+
+    checkPasswordMatch(password,password2);
+
+    checkEmail(email);
 });
 
 
